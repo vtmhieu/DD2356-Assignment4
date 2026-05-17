@@ -23,3 +23,25 @@ The following plots visualize the row sums computed by the serial and parallel v
 
 **Parallel MPI Implementation:**
 ![Parallel Row Sum Computation](./plot_parallel.png)
+
+### Evaluate performance scaling
+
+#### On school cluster
+
+```bash
+jovyan@jupyter-hieuvtm:~/DD2356-Assignment4/ex2$ bash run_weak_scaling.sh
+Running Weak Scaling Experiment...
+Processes | Matrix Size (N) | Runtime (s)
+-----------------------------------------
+        1 |            1000 | 0.001574
+        2 |            1414 | 0.003270
+        4 |            2000 | 0.008479
+        8 |            2832 | 0.016070
+       16 |            4000 | 0.006481
+```
+
+### On Dardel
+
+```bash
+
+```

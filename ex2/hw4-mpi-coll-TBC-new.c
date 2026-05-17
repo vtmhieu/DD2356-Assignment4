@@ -34,7 +34,7 @@ void compute_row_sums(double matrix[N][N], double row_sums[N]) {
 }
 
 void write_output(double row_sums[N]) {
-  FILE *f = fopen("row_sums_output.txt", "w");
+  FILE *f = fopen("row_sums_school.txt", "w");
   for (int i = 0; i < N; i++) {
     fprintf(f, "%f\n", row_sums[i]);
   }
