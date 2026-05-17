@@ -26,11 +26,10 @@ The following plots visualize the row sums computed by the serial and parallel v
 
 ## Performance Scaling Evaluation
 
-### Weak Scaling Plot
-
-![Weak Scaling Performance](./weak_scaling_plot.png)
-
 ### 1. School Cluster Analysis
+
+**Weak Scaling Plot:**
+![Weak Scaling Performance - School Cluster](./weak_scaling_school.png)
 
 **Commands used:**
 To achieve weak scaling, the matrix size $N$ was dynamically passed to the compiler to ensure constant work per process ($N = 1000 \times \sqrt{P}$). The code was compiled and executed using the following bash commands for each process count $P$:
@@ -54,6 +53,9 @@ In an ideal weak scaling scenario (constant work per process), the runtime shoul
 Interestingly, at 16 processes, the execution time drops to 0.0064s. This is likely due to beneficial cache effects; as the total matrix size reaches $4000 \times 4000$, the 16 processes split the data into much smaller, cache-friendly row chunks (250 rows each), yielding a computational speedup that partially offsets the communication overhead.
 
 ### 2. Dardel Cluster Analysis
+
+**Weak Scaling Plot:**
+![Weak Scaling Performance - Dardel](./weak_scaling_dardel.png)
 
 **Commands used:**
 The job was submitted using a Slurm batch script (`sbatch dardel_weak_scaling.sh`) configured with `--ntasks-per-node=4`. Inside the script, the code was compiled with the standard Cray compiler wrapper and executed using `srun`:

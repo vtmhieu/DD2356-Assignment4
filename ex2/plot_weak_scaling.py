@@ -6,17 +6,26 @@ procs = [1, 2, 4, 8, 16]
 times_school = [0.001574, 0.003270, 0.008479, 0.016070, 0.006481] 
 times_dardel = [0.002424, 0.005317, 0.007833, 0.019309, 0.042556]
 
+# Plot for School Cluster
 plt.figure(figsize=(8, 6))
-
-plt.plot(procs, times_school, marker='o', linestyle='-', label='School Cluster')
-plt.plot(procs, times_dardel, marker='s', linestyle='--', label='Dardel')
-
+plt.plot(procs, times_school, marker='o', color='blue', linestyle='-')
 plt.xlabel("Number of Processes")
 plt.ylabel("Execution Time (s)")
-plt.title("Weak Scaling Performance")
+plt.title("Weak Scaling Performance - School Cluster")
 plt.xticks(procs)
-plt.legend()
 plt.grid(True, which="both", ls="--")
+plt.savefig("weak_scaling_school.png")
+print("Saved plot to weak_scaling_school.png")
+plt.close()
 
-plt.savefig("weak_scaling_plot.png")
-print("Saved plot to weak_scaling_plot.png")
+# Plot for Dardel
+plt.figure(figsize=(8, 6))
+plt.plot(procs, times_dardel, marker='s', color='orange', linestyle='-')
+plt.xlabel("Number of Processes")
+plt.ylabel("Execution Time (s)")
+plt.title("Weak Scaling Performance - Dardel")
+plt.xticks(procs)
+plt.grid(True, which="both", ls="--")
+plt.savefig("weak_scaling_dardel.png")
+print("Saved plot to weak_scaling_dardel.png")
+plt.close()
