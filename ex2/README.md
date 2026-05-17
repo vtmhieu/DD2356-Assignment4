@@ -43,5 +43,15 @@ Processes | Matrix Size (N) | Runtime (s)
 ### On Dardel
 
 ```bash
-
+smio@login1:~/Private/DD2356-Assignment4/ex2> cat slurm-20654402.out
+Running Weak Scaling Experiment on Dardel...
+Processes | Matrix Size (N) | Runtime (s)
+-----------------------------------------
+srun: warning: can't run 1 processes on 4 nodes, setting nnodes to 1
+        1 |            1000 | 0.002424
+srun: warning: can't run 2 processes on 4 nodes, setting nnodes to 2
+        2 |            1414 | 0.005317
+        4 |            2000 | 0.007833
+        8 |            2832 | 0.019309
+       16 |            4000 | 0.042556
 ```
