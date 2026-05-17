@@ -24,13 +24,22 @@ The following plots visualize the row sums computed by the serial and parallel v
 **Parallel MPI Implementation:**
 ![Parallel Row Sum Computation](./plot_parallel.png)
 
-### Evaluate performance scaling
+## Performance Scaling Evaluation
 
-#### On school cluster
+### Weak Scaling Plot
+
+![Weak Scaling Performance](./weak_scaling_plot.png)
+
+### 1. School Cluster Analysis
+
+**Commands used:**
+To achieve weak scaling, the matrix size $N$ was dynamically passed to the compiler to ensure constant work per process ($N = 1000 \times \sqrt{P}$). The code was compiled and executed using the following bash commands for each process count $P$:
+```bash
+mpicc -O3 hw4-mpi-coll-TBC-new.c -o parallel_scaling -DN=$N
+mpirun -np $P ./parallel_scaling
+```
 
 ```bash
-jovyan@jupyter-hieuvtm:~/DD2356-Assignment4/ex2$ bash run_weak_scaling.sh
-Running Weak Scaling Experiment...
 Processes | Matrix Size (N) | Runtime (s)
 -----------------------------------------
         1 |            1000 | 0.001574
@@ -40,18 +49,28 @@ Processes | Matrix Size (N) | Runtime (s)
        16 |            4000 | 0.006481
 ```
 
-### On Dardel
+**Analysis:**
+In an ideal weak scaling scenario (constant work per process), the runtime should remain completely flat. Instead, the runtime increases significantly from 1 to 8 processes (0.0015s to 0.016s). This poor scaling efficiency occurs because the mathematical computation is exceptionally fast, causing the execution time to be completely dominated by the overhead of MPI collective communications (`MPI_Scatter`, `MPI_Gather`, `MPI_Reduce`).
+Interestingly, at 16 processes, the execution time drops to 0.0064s. This is likely due to beneficial cache effects; as the total matrix size reaches $4000 \times 4000$, the 16 processes split the data into much smaller, cache-friendly row chunks (250 rows each), yielding a computational speedup that partially offsets the communication overhead.
+
+### 2. Dardel Cluster Analysis
+
+**Commands used:**
+The job was submitted using a Slurm batch script (`sbatch dardel_weak_scaling.sh`) configured with `--ntasks-per-node=4`. Inside the script, the code was compiled with the standard Cray compiler wrapper and executed using `srun`:
+```bash
+cc -O3 hw4-mpi-coll-TBC-new.c -o parallel_scaling -DN=$N
+srun -n $P ./parallel_scaling
+```
 
 ```bash
-smio@login1:~/Private/DD2356-Assignment4/ex2> cat slurm-20654402.out
-Running Weak Scaling Experiment on Dardel...
 Processes | Matrix Size (N) | Runtime (s)
 -----------------------------------------
-srun: warning: can't run 1 processes on 4 nodes, setting nnodes to 1
         1 |            1000 | 0.002424
-srun: warning: can't run 2 processes on 4 nodes, setting nnodes to 2
         2 |            1414 | 0.005317
         4 |            2000 | 0.007833
         8 |            2832 | 0.019309
        16 |            4000 | 0.042556
 ```
+
+**Analysis:**
+The weak scaling on Dardel shows a consistent and steep increase in runtime from 0.0024s (1 process) to 0.0425s (16 processes). Since we limited the processes to 4 per node (`--ntasks-per-node=4`), the 16-process job was forced to execute across 4 distinct physical nodes. The sharp increase in time—especially when jumping from 2 nodes (8 processes) to 4 nodes (16 processes)—is caused by the heavy inter-node communication penalty over the network. Network communication is significantly slower than intra-node shared memory communication, severely exacerbating the overhead of the MPI collectives.

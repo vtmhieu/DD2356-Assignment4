@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 # Replace these lists with the actual runtime data obtained from the scripts
 procs = [1, 2, 4, 8, 16]
 # Example runtimes (replace with real output)
-times_school = [0.01, 0.011, 0.012, 0.014, 0.015] 
-times_dardel = [0.008, 0.009, 0.009, 0.011, 0.012]
+times_school = [0.001574, 0.003270, 0.008479, 0.016070, 0.006481] 
+times_dardel = [0.002424, 0.005317, 0.007833, 0.019309, 0.042556]
 
 plt.figure(figsize=(8, 6))
 
