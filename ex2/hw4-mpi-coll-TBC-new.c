@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#ifndef N
 #define N 1000 // Matrix size
+#endif
 
 /*
 Modify the serial code to use MPI_Scatter to distribute matrix rows among
@@ -45,7 +47,8 @@ int main(int argc, char **argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  double matrix[N][N], row_sums[N];
+  static double matrix[N][N];
+  double row_sums[N];
 
   if (rank == 0) {
     initialize_matrix(matrix);

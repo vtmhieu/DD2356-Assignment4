@@ -43,6 +43,7 @@ int main() {
   /*TODO: Timer begins */
   compute_row_sums(matrix, row_sums);
   /*TODO: Timer ends */
+  write_output(row_sums);
   printf("Row sum computation complete.\n");
   return 0;
 }
