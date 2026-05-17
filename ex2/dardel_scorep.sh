@@ -4,12 +4,12 @@
 #SBATCH --nodes=4
 #SBATCH --ntasks-per-node=4
 #SBATCH --partition=main
-#SBATCH --account=edu24.dd2356
+#SBATCH --account=edu26.dd2356
 
 # Load necessary modules
-# module load PDC/23.03
+module load PDCOLD/23.03
 # module load openmpi
-# module load scorep
+module load scorep
 
 # Profiling at the largest scale: 16 processes
 P=16

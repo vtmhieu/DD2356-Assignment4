@@ -4,7 +4,7 @@
 #SBATCH --nodes=4
 #SBATCH --ntasks-per-node=4
 #SBATCH --partition=main
-#SBATCH --account=edu24.dd2356
+#SBATCH --account=edu26.dd2356
 
 # Load necessary modules (adjust based on Dardel's actual modules)
 # module load PDC/23.03
