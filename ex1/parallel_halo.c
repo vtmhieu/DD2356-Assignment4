@@ -4,7 +4,7 @@
 #include <mpi.h>
 
 #define N 1000000 // Grid size
-#define STEPS 100 // Time steps
+#define STEPS 10000 // Time steps
 #define C 1.0   // Wave speed
 #define DT 0.01 // Time step
 #define DX 1.0  // Grid spacing
