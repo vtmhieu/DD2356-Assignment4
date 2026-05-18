@@ -81,3 +81,32 @@ By commenting and decommenting the place to take files from
   ```
 - ## Analyze the parallel efficiency (on the school cluster) at increased number of processes. Hint: You may want to increase the problem size (N) and the number of steps for better scalability. You may also want to disable the I/O for measuring scalability. 
   The visualization is already deactivated by not inputing the `-DWRITE_OUTPUT` flag. The N is `2000` and the step is `300`. 
+
+  Speedup:
+
+  S_p = T_1mpi / T_p
+
+  Parallel efficiency:
+
+  E_p = S_p / p = T_1mpi / (p * T_p)
+
+  Using the MPI 1-process runtime T_1mpi = 32.036022 s as baseline.
+  - Serial 1 process: 34.904984 s. 
+  - MPI 1 process: T_1mpi = 32.036022 s, S_1mpi = 1.0000, E_1mpi = 1.0000
+  - MPI 2 processes: T_2 = 16.175000 s, S_2 = 32.036022 / 16.175000 ≈ 1.9810, E_2 ≈ 0.9905
+  - MPI 4 processes: T_4 = 7.956181 s, S_4 = 32.036022 / 7.956181 ≈ 4.0266, E_4 ≈ 1.0066
+  - MPI 8 processes: T_8 = 4.129033 s, S_8 = 32.036022 / 4.129033 ≈ 7.7565, E_8 ≈ 0.9696
+  - MPI 16 processes: T_16 = 2.170670 s, S_16 = 32.036022 / 2.170670 ≈ 14.7587, E_16 ≈ 0.9224
+  - MPI 32 processes: T_32 = 1.658731 s, S_32 = 32.036022 / 1.658731 ≈ 19.3136, E_32 ≈ 0.6036
+  - MPI 64 processes: T_64 = 3.299068 s, S_64 = 32.036022 / 3.299068 ≈ 9.7100, E_64 ≈ 0.1517
+
+  We have superlinear scaling for the number of processes being 4. This is AMAZING. It means that the matirx *N (2K elements * 2k elements)* was getting out of multiple layers of memory, hence, by dividing it to multiple threads, they can keep it closer to memory, and hence the superlinear scaling.
+  Other than that, it seems that there was enough computation that the overhead of sending data is not that relevant.
+  The L1 cache is 32KB *(32 * 1024 / 2048 = 16)*. That would mean that 16 rows would fit nicelly in the L1 cahce. 
+  The L2 cache is 2048KB (rough approximation). This means that inside it would fit the whole N matrix.
+  These results would mean that we would get superscaling even while having 128 processes. The overhead of stopping the computation and sending and receiving data is too much tho.
+  At the same time, the L2 cache that can hypothetically hold the whole N matrix is good. We have 2 matrices (the 2 grids), so the L2 cache would need to fit 2 times that, plus some extra memory for other variables. So, for having 2 processes , and dividing the memory by 2 is still not giving superlinear. But dividing and sharing the memory to 4 processes means that we will have the perfect amount for L2 cache, and look, BOOOOMM superlinear.
+
+  ## GPT usage
+  I asked and threatened Copilot to compute himself the speedup and efficiency (I only gave it the times and told it to do the division). We are heating up the planet because I were too lazy to use my laptop calculator.
+  I also talked with claude to see if there is a way to send the data without having any blocking behaviour. Just to double check.
