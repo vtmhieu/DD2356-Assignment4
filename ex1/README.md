@@ -110,6 +110,7 @@ When checking the normal output job file, we noticed a similar ~5 seconds runtim
 
 For the mpi_callers report, the relevant section is:
 
+```
 Table 1: MPI Message Stats by Caller
 
 MPI | MPI Msg | MPI Msg | MsgSz | 64KiB<= | Function
@@ -134,11 +135,14 @@ Bytes% | | | Count | <1MiB | PE=[mmm]
 4||| 13.9% | 160,000.0 | 20,000.0 | 20,000.0 | 0.0 | pe.9
 4||| 7.0% | 80,000.0 | 10,000.0 | 10,000.0 | 0.0 | pe.15
 |====================================================================
+```
 
 In total, on an execution with 16 processes, we make 18,752 MPI calls throughout. We can see from the table, that we have only 2 MPI_Scatter calls, which aligns with our program as MPI_Scatter is only done by the root process with rank 0, and is done once for the two global arrays (u and u_prev). The rest of the 18,750 calls done are MPI_Sendrecv calls that are made during the halo exchanges between processes (we have no MPI_Gather calls since we removed the I/O during performance evaluation).
 
+
 For the profile report, the relevant section is: 
 
+```
 Table 1: Profile by Function Group and Function
 
 Time% | Time | Imb. | Imb. | Calls | Group
@@ -155,6 +159,7 @@ Time% | Time | Imb. | Imb. | Calls | Group
 ||-------------------------------------------------------------
 || 20.1% | 1.006466 | 0.094513 | 9.2% | 18,750.0 | MPI_Sendrecv
 |==============================================================
+```
 
 From the table, we can see that from the ~5 seconds (4.997) total execution time, around 1.02 seconds is spent on MPI calls, with the rest of the time spent elsewhere. With the vast majority of the MPI calls being MPI_Sendrecv, it makes sense that an overwhelming portion of the time spent during MPI calls is on MPI_Sendrecv (~1 of the 1.02 seconds). The two MPI_Scatter calls do make up a larger proportion of the total MPI call time than the total MPI calls made, and this may be due to MPI_Scatter being a much more complicated communication operation than a simpler MPI_Sendrecv.
 
