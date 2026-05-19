@@ -76,3 +76,61 @@ Processes | Matrix Size (N) | Runtime (s)
 
 **Analysis:**
 The weak scaling on Dardel shows a consistent and steep increase in runtime from 0.0024s (1 process) to 0.0425s (16 processes). Since we limited the processes to 4 per node (`--ntasks-per-node=4`), the 16-process job was forced to execute across 4 distinct physical nodes. The sharp increase in time—especially when jumping from 2 nodes (8 processes) to 4 nodes (16 processes)—is caused by the heavy inter-node communication penalty over the network. Network communication is significantly slower than intra-node shared memory communication, severely exacerbating the overhead of the MPI collectives.
+
+### Profiling Evaluation
+
+To investigate the poor weak scaling performance on Dardel and find the actual bottleneck, we instrumented the code using Cray Perftools at 16 processes. The following commands were used to compile, instrument, execute, and generate the profiling reports:
+
+```bash
+module load perftools-base
+module load perftools
+cc -O3 hw4-mpi-coll-TBC-new.c -o parallel_scaling -DN=4000
+pat_build -g mpi -o parallel_scaling_trace parallel_scaling
+srun -n 16 ./parallel_scaling_trace
+pat_report -O mpi_callers ./parallel_scaling_trace+*/xf-files > mpi_report.txt
+pat_report -O profile ./parallel_scaling_trace+*/xf-files > time_report.txt
+```
+
+**MPI Message Stats by Caller (from `mpi_callers` report):**
+```text
+Table 1:  MPI Message Stats by Caller
+
+    MPI |     MPI Msg |   MPI | MsgSz | 256<= | 1MiB<= | Function
+    Msg |       Bytes |   Msg |   <16 | MsgSz |  MsgSz |  Caller
+ Bytes% |             | Count | Count | <4KiB | <16MiB |   PE=[mmm]
+        |             |       |       | Count |  Count | 
+       
+ 100.0% | 8,002,008.0 |   3.0 |   1.0 |   1.0 |    1.0 | Total
+|-------------------------------------------------------------------
+| 100.0%| 8,000,000.0 |   1.0 |   0.0 |   0.0 |    1.0 | MPI_Scatter
+```
+
+From the MPI callers table, we see that exactly 100% of the MPI Message bytes (8 MB) are attributed to the `MPI_Scatter` operation. Because we are scattering a large $4000 \times 4000$ matrix (at 16 processes) to all nodes, the data distribution creates a massive communication payload over the network. 
+
+**Profile by Function (from `time_report` report):**
+```text
+Table 1:  Profile by Function Group and Function
+
+  Time% |     Time | Calls | Group / Function
+        |          |       |   
+ 100.0% | 0.062364 |  19.0 | Total
+|-----------------------------------------------------------------
+|  64.1% | 0.039964 |  11.0 | MPI
+||  63.9% | 0.039842 |   1.0 | MPI_Scatter
+|=================================================================
+|  32.3% | 0.020137 |   7.0 | MPI_SYNC
+||  21.6% | 0.013452 |   2.0 | MPI_Barrier(sync)
+||   6.5% | 0.004058 |   1.0 | MPI_Finalize(sync)
+||   3.2% | 0.001985 |   1.0 | MPI_Gather(sync)
+|=================================================================
+|   3.6% | 0.002263 |   1.0 | USER
+||   3.6% | 0.002263 |   1.0 | main
+```
+
+The time profile strongly supports our hypothesis regarding the scaling performance drop. Out of the total execution time recorded by the profiler:
+1. **MPI Communication (`MPI_Scatter`):** Takes up roughly **64%** of the entire execution time. Sending the large matrix chunks to different nodes across the network is the primary bottleneck.
+2. **MPI Synchronization:** Takes up **32.3%** of the time, primarily waiting at `MPI_Barrier` and `MPI_Gather`.
+3. **Actual Computation (`USER/main`):** The mathematical computation (calculating the row sums) takes an astonishingly small **3.6%** of the execution time (0.0022 seconds). 
+
+**Conclusion:** 
+The profiling data conclusively shows that this parallelized matrix row-summation program is heavily communication-bound. Nearly 96% of the program's runtime is spent distributing data, waiting for synchronization, and collecting results, while less than 4% is spent doing actual mathematics. This fully explains why our weak scaling efficiency dropped as we added more processes across different nodes.
