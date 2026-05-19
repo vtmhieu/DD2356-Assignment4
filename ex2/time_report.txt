@@ -1,0 +1,151 @@
+CrayPat/X:  Version 24.11.0 Revision 31a512b4d sles15.5_x86_64  10/02/24 19:11:06
+
+Number of PEs (MPI ranks):   16
+                           
+Numbers of PEs per Node:      4  PEs on each of  4  Nodes
+                           
+Numbers of Threads per PE:    1
+                           
+Number of Cores per Socket:  64
+
+Execution start time:  Tue May 19 20:13:23 2026
+
+System name and speed:  nid001861  2.262 GHz (nominal)
+
+AMD   Rome                 CPU  Family: 23  Model: 49  Stepping:  0
+
+Core Performance Boost:  All 16 PEs have CPB capability
+
+Current path to data file:
+  /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scaling_trace+1197659-846344884t   (RTS, 4 data files)
+
+
+Notes for table 1:
+
+  This table shows functions that have significant exclusive time,
+    averaged across ranks.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O profile ...
+
+Table 1:  Profile by Function Group and Function
+
+  Time% |     Time |     Imb. |  Imb. | Calls | Group
+        |          |     Time | Time% |       |  Function
+        |          |          |       |       |   PE=HIDE
+       
+ 100.0% | 0.062364 |       -- |    -- |  19.0 | Total
+|-----------------------------------------------------------------
+|  64.1% | 0.039964 |       -- |    -- |  11.0 | MPI
+||----------------------------------------------------------------
+||  63.9% | 0.039842 | 0.001960 |  5.0% |   1.0 | MPI_Scatter
+||================================================================
+|  32.3% | 0.020137 |       -- |    -- |   7.0 | MPI_SYNC
+||----------------------------------------------------------------
+||  21.6% | 0.013452 | 0.013404 | 99.6% |   2.0 | MPI_Barrier(sync)
+||   6.5% | 0.004058 | 0.004038 | 99.5% |   1.0 | MPI_Finalize(sync)
+||   3.2% | 0.001985 | 0.001963 | 98.9% |   1.0 | MPI_Gather(sync)
+||================================================================
+|   3.6% | 0.002263 | 0.017389 | 94.4% |   1.0 | USER
+||----------------------------------------------------------------
+||   3.6% | 0.002263 | 0.017389 | 94.4% |   1.0 | main
+|=================================================================
+
+========================  Additional details  ========================
+
+General table notes:
+
+    The default notes for a table are based on the default definition of
+    the table, and do not account for the effects of command-line options
+    that may modify the content of the table.
+    
+    Detailed notes, produced by the pat_report -v option, do account for
+    all command-line options, and also show how data is aggregated, and
+    if the table content is limited by thresholds, rank selections, etc.
+    
+    An imbalance metric in a line is based on values in main threads
+    across multiple ranks, or on values across all threads, as applicable.
+    
+    An imbalance percent in a line is relative to the maximum value
+    for that line across ranks or threads, as applicable.
+    
+    If the number of Calls for a function is shown as "--", then that
+    function was not traced and the other values in its line summarize
+    the data collected for functions that it calls and that were traced.
+    
+Experiment:  trace
+
+Original path to data file:
+  /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/parallel_scaling_trace+1197659-846344884t/xf-files   (RTS, 4 data files)
+
+Original program:
+  /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/parallel_scaling
+
+Instrumented with:
+  pat_build -g mpi -o parallel_scaling_trace parallel_scaling
+
+Instrumented program:
+  /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scaling_trace
+
+Program invocation:
+  /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scaling_trace
+
+Exit Status:  0 for 16 PEs
+
+Memory pagesize:  4 KiB
+
+Memory hugepagesize:  Not Available
+
+Programming environment:  CRAY
+
+Runtime environment variables:
+  CRAYPAT_COMPILER_OPTIONS=1
+  CRAYPAT_LD_LIBRARY_PATH=/opt/cray/pe/perftools/24.11.0/lib64
+  CRAYPAT_OPTS_EXECUTABLE=libexec64/opts
+  CRAYPAT_ROOT=/opt/cray/pe/perftools/24.11.0
+  CRAYPE_VERSION=2.7.33
+  CRAY_BINUTILS_VERSION=/opt/cray/pe/cce/18.0.1
+  CRAY_CC_VERSION=18.0.1
+  CRAY_DSMML_VERSION=0.3.0
+  CRAY_FTN_VERSION=18.0.1
+  CRAY_LIBSCI_VERSION=24.11.0
+  CRAY_MPICH_VERSION=8.1.31
+  CRAY_PERFTOOLS_VERSION=24.11.0
+  LMOD_FAMILY_COMPILER_VERSION=18.0.1
+  LMOD_FAMILY_CRAYPE_CPU_VERSION=false
+  LMOD_FAMILY_CRAYPE_NETWORK_VERSION=false
+  LMOD_FAMILY_CRAYPE_VERSION=2.7.33
+  LMOD_FAMILY_LIBSCI_VERSION=24.11.0
+  LMOD_FAMILY_MPI_VERSION=8.1.31
+  LMOD_FAMILY_PERFTOOLS_VERSION=false
+  LMOD_FAMILY_PRGENV_VERSION=8.6.0
+  LMOD_VERSION=8.7.37
+  MPICH_DIR=/opt/cray/pe/mpich/8.1.31/ofi/crayclang/17.0
+  PAT_RT_PERFCTR_DISABLE_COMPONENTS=nvml,rocm_smi
+  PERFTOOLS_VERSION=24.11.0
+  PMI_CONTROL_PORT=27291
+  PMI_JOBID=20741625
+  PMI_LOCAL_RANK=0
+  PMI_LOCAL_SIZE=4
+  PMI_RANK=0
+  PMI_SHARED_SECRET=9446794223259083367
+  PMI_SIZE=16
+  PMI_UNIVERSE_SIZE=16
+
+Report time environment variables:
+    CRAYPAT_ROOT=/opt/cray/pe/perftools/24.11.0
+
+Number of MPI control variables collected:  152
+
+  (To see the list, specify: -s mpi_cvar=show)
+
+Report command line options:  -O profile
+
+Operating system:
+  Linux 5.14.21-150500.55.65_13.0.73-cray_shasta_c #1 SMP Fri Jun 14 21:25:32 UTC 2024 (d052318)
+
+Instrumentation overhead could not be estimated.
+
+Number of traced functions that were called:  10
+
+  (To see the list, specify:  -s traced_functions=show)
+
