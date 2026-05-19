@@ -1,0 +1,53 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cpe/23.03"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cpe/23.03"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+Executing this command requires loading "cpe/23.03" which failed while
+processing the following module(s):
+
+    Module fullname  Module Filename
+    ---------------  ---------------
+    PDCOLD/23.03     /pdc/software/modules/PDCOLD/23.03.lua
+
+
+Lmod has detected the following error: The following module(s) are unknown:
+"scorep"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "scorep"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+/var/spool/slurm/slurmd/job20729746/slurm_script: line 26: scorep: command not found
+[2026-05-19T15:59:10.594] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.594] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.595] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.595] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.621] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.621] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.621] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.621] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.621] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.621] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.622] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.622] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.635] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.635] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.635] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+[2026-05-19T15:59:10.635] error: execve(): /cfs/klemming/home/s/smio/Private/DD2356-Assignment4/ex2/./parallel_scorep: No such file or directory
+srun: error: nid002663: tasks 0-3: Exited with exit code 2
+srun: Terminating StepId=20729746.0
+srun: error: nid002664: tasks 4-7: Exited with exit code 2
+srun: error: nid002666: tasks 12-15: Exited with exit code 2
+srun: error: nid002665: tasks 8-11: Exited with exit code 2
+/var/spool/slurm/slurmd/job20729746/slurm_script: line 36: scorep-score: command not found
