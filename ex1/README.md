@@ -20,9 +20,17 @@ We can see that the visualization for running the two different versions of this
 
 ## School Cluster Evaluation
 
-To compile the code on the school cluster: mpicc -o parallel_halo parallel_halo.c -lm
+To compile the code on the school cluster: 
 
-To run the code on the school cluster with a certain number of processes: mpirun -np {N} ./parallel_halo
+```
+mpicc -o parallel_halo parallel_halo.c -lm
+```
+
+To run the code on the school cluster with a certain number of processes: 
+
+```
+mpirun -np {N} ./parallel_halo
+```
 
 Runtime:
 | Processes | Time (s) |
@@ -40,7 +48,11 @@ We can see that the strong scaling performs very well on the school cluster, eve
 
 ## Dardel Evaluation
 
-To compile the code on dardel: cc -o parallel_halo parallel_halo.c -lm
+To compile the code on dardel: 
+
+```
+cc -o parallel_halo parallel_halo.c -lm
+```
 
 To run the code on dardel we used a batch job shell script, to run with a certain number of processes P, adjust the --ntasks-per-node to P and the srun command to have -n {P}. To schedule our job on dardel we simply do sbatch {job shell file}
 
@@ -78,7 +90,7 @@ Strong Scaling: ![Strong Scaling Dardel](Dardel-StrongScaling.png)
 
 We can see that the strong scaling also performs very well on Dardel, acheiving similar strong performance scaling nearing the ideal linear strong scaling as we increase the process count. We notice a slighly more measurable dip in the strong scaling for 8 processes, as on the school cluster we had a speedup of 7.16 while on Dardel it is just 6.03. However we notice that unlike the school cluster the speedup increases continue on Dardel for 16 processes. On dardel, the speedup from 8 to 16 nearly doubles - which is the ideal possible improvement, while the school cluster had the speedup take a signifcant drop. Despite the raw execution time taking longer on Dardel for process counts of 1-8, we can achieve our minimum execution time across all runs on both systems with a process count of 16 on Dardel, with the strong scaling still imrpvoing at a close to ideal rate. Further performance improvements are possible on Dardel with higher process counts or on larger scale problem sizes. Overall, the scalability of the parallel code extends further on Dardel than the school cluster.
 
-ScoreP Evaluation: 
+### ScoreP Evaluation: 
 
 To be able to run score-P tracing on our parallel_halo code, we had to do some additional setup, namely after compiling the original .c code, running:
 
