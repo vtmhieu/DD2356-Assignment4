@@ -12,9 +12,9 @@ For verification purposes, we then have a gather to update the global arrays at 
 
 ## Verification
 
-Sequential: ![Sequential Wave Simulation Visualization](SequentialOutput.png)
+Sequential: ![Sequential Wave Simulation Visualization](ex1/SequentialOutput.png)
 
-Parallel: ![MPI Parallel Wave Simulation Visualization](ParallelOutput.png)
+Parallel: ![MPI Parallel Wave Simulation Visualization](ex1/ParallelOutput.png)
 
 We can see that the visualization for running the two different versions of this program with the same parameters gives the same visualization, showing that the computation is not affected by our parallelization, and the parallel implementation is correct. With the verification of the correctness of the code, when evaluating, we remove the I/O at every 10th step to properly measure scalability, as well as increase our grid size dramatically (from 1000 to 1000000) and the number of steps (from 100 to 10000).
 
@@ -42,7 +42,7 @@ Runtime:
 | 16      | 7.86     |
 
 
-Strong Scaling: ![Strong Scaling School Cluster](SchoolCluster-StrongScaling.png)
+Strong Scaling: ![Strong Scaling School Cluster](ex1/SchoolCluster-StrongScaling.png)
 
 We can see that the strong scaling performs very well on the school cluster, even when compared to the ideal. From processes 2-8, the strong scaling nears the linear improvement of the ideal, which shows that the parallel version of the code reaches near full capability. However, we notice a signficant performance drop at 16 processes, both in the strong scaling, and in the actual runtime taking longer than at 8 processes. This may be due to the halo exchange now requiring much more communication at 16 processes to exchange boundary values, which may now overwhelm the added parallelization benefits of segmenting the array into smaller sections for each process. On a larger array, 16 processes may still provide added performance benefit as the computation of the process may not be under saturated with too small a section for the communication costs.
 
@@ -86,7 +86,7 @@ Runtime:
 | 8       | 10.02    |
 | 16      | 5.23     |
 
-Strong Scaling: ![Strong Scaling Dardel](Dardel-StrongScaling.png)
+Strong Scaling: ![Strong Scaling Dardel](ex1/Dardel-StrongScaling.png)
 
 We can see that the strong scaling also performs very well on Dardel, acheiving similar strong performance scaling nearing the ideal linear strong scaling as we increase the process count. We notice a slighly more measurable dip in the strong scaling for 8 processes, as on the school cluster we had a speedup of 7.16 while on Dardel it is just 6.03. However we notice that unlike the school cluster the speedup increases continue on Dardel for 16 processes. On dardel, the speedup from 8 to 16 nearly doubles - which is the ideal possible improvement, while the school cluster had the speedup take a signifcant drop. Despite the raw execution time taking longer on Dardel for process counts of 1-8, we can achieve our minimum execution time across all runs on both systems with a process count of 16 on Dardel, with the strong scaling still imrpvoing at a close to ideal rate. Further performance improvements are possible on Dardel with higher process counts or on larger scale problem sizes. Overall, the scalability of the parallel code extends further on Dardel than the school cluster.
 
@@ -184,17 +184,17 @@ To validate the correctness of the parallel implementation, we compared the outp
 The following plots visualize the row sums computed by the serial and parallel versions, confirming their identical output:
 
 **Serial Implementation:**
-![Serial Row Sum Computation](./plot_serial.png)
+![Serial Row Sum Computation](./ex2/plot_serial.png)
 
 **Parallel MPI Implementation:**
-![Parallel Row Sum Computation](./plot_parallel.png)
+![Parallel Row Sum Computation](./ex2/plot_parallel.png)
 
 ## Performance Scaling Evaluation
 
 ### 1. School Cluster Analysis
 
 **Weak Scaling Plot:**
-![Weak Scaling Performance - School Cluster](./weak_scaling_school.png)
+![Weak Scaling Performance - School Cluster](./ex2/weak_scaling_school.png)
 
 **Commands used:**
 To achieve weak scaling, the matrix size $N$ was dynamically passed to the compiler to ensure constant work per process ($N = 1000 \times \sqrt{P}$). The code was compiled and executed using the following bash commands for each process count $P$:
@@ -220,7 +220,7 @@ Interestingly, at 16 processes, the execution time drops to 0.0064s. This is lik
 ### 2. Dardel Cluster Analysis
 
 **Weak Scaling Plot:**
-![Weak Scaling Performance - Dardel](./weak_scaling_dardel.png)
+![Weak Scaling Performance - Dardel](./ex2/weak_scaling_dardel.png)
 
 **Commands used:**
 The job was submitted using a Slurm batch script (`sbatch dardel_weak_scaling.sh`) configured with `--ntasks-per-node=4`. Inside the script, the code was compiled with the standard Cray compiler wrapper and executed using `srun`:
